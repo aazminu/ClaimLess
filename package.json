@@ -6,7 +6,9 @@
     "dev": "tsx server.ts",
     "build": "next build",
     "start": "NODE_ENV=production tsx server.ts",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --test tests/medicalBillAuditor.test.mjs",
+    "audit": "node bin/claimless-audit.mjs"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.11",
