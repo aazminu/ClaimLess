@@ -1,0 +1,18 @@
+RIVERSIDE MEDICAL CENTER — ITEMIZED PATIENT STATEMENT
+Patient: Jordan Lee
+Account: MRN-204811
+Service date: June 18, 2026
+Insurance: Northstar Health
+Claim: CLM-771920
+
+99284  Emergency department visit — Level 4      Qty 1   $1,850.00
+80053  Comprehensive metabolic panel             Qty 1     $410.00
+80053  Comprehensive metabolic panel             Qty 1     $410.00
+96360  IV hydration, first hour                   Qty 1     $620.00
+PHARM  Pharmacy — miscellaneous                   Qty 1     $385.00
+71046  Radiology interpretation                   Qty 1     $725.00
+
+Total charges: $4,400.00
+Insurance paid: $1,900.00
+Patient responsibility: $2,500.00
+Due July 25, 2026

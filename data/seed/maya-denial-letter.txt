@@ -1,0 +1,45 @@
+BLUESHIELD HORIZON
+PO Box 98211, Newark, NJ 07101
+Member Services: 1-800-555-0142
+
+June 24, 2026
+
+Maya Rodriguez
+482 Willow Ave, Apt 3F
+Jersey City, NJ 07302
+
+EXPLANATION OF ADVERSE BENEFIT DETERMINATION
+
+Member: Maya Rodriguez
+Member ID: BSH-448210993
+Plan: Horizon PPO Select
+Claim Number: CLM-2026-118344
+Provider: Northside Orthopedic Associates — Alan Weiss, MD
+Date of Service: May 28, 2026
+Service: MRI, right knee, without contrast (CPT 73721)
+Billed Amount: $2,400.00
+Amount Payable: $0.00
+
+DETERMINATION: DENIED
+
+Reason for denial (Code CO-197): Precertification/authorization/notification
+absent. Your plan requires prior authorization for advanced imaging services.
+Our records of this claim do not reflect a valid prior authorization for the
+service billed.
+
+You are responsible for the billed amount unless this determination is
+reversed.
+
+YOUR APPEAL RIGHTS
+
+You or your authorized representative may file an internal appeal within 180
+days of the date of this notice (by December 21, 2026). Appeals must be
+submitted in writing to BlueShield Horizon Appeals, PO Box 98244, Newark, NJ
+07101, or by fax to 1-800-555-0188, and should include your name, member ID,
+claim number, a statement of why the denial should be reversed, and copies of
+supporting documentation.
+
+If you have questions, call Member Services at 1-800-555-0142.
+
+This document is part of a fictional demonstration. All names, numbers and
+entities are synthetic.
