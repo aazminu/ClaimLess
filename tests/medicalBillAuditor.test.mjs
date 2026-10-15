@@ -98,3 +98,55 @@ test('generateNegotiationStrategy produces actionable settlement offer and dispu
   assert.ok(strategy.walkAwayCeilingUsd >= strategy.openingSettlementOfferUsd);
   assert.ok(strategy.scriptSteps.length >= 3);
 });
+
+test('parseItemizedBillText handles multi-page OCR headers, accounting negative parentheses, optional Qty, and inline negative adjustments', () => {
+  const multiPageOcrBill = [
+    '--- Page 1 of 2 ---',
+    'Northwestern Memorial Hospital - Statement of Account',
+    'Patient: Taylor Morgan',
+    'Account: ACCT-99812',
+    'Service date: 2026-09-10',
+    '99284 Emergency Dept Level 4 $1,850.00',
+    '80053 Comprehensive Metabolic Panel Qty 1 $410.00',
+    'Continued on next page',
+    '=== Page 2 of 2 ===',
+    'ADJ01 Plan Contractual Adjustment Qty 1 ($360.00)',
+    'ADJ02 Prompt Pay Credit -$100.00',
+    'Total charges: $2,260.00 (est. - see page 2)',
+    'Contractual adjustment: ($200.00)',
+    'Due 2026-10-15',
+  ].join('\n');
+
+  const parsed = parseItemizedBillText(multiPageOcrBill);
+  assert.equal(parsed.providerName, 'Northwestern Memorial Hospital');
+  assert.equal(parsed.patientName, 'Taylor Morgan');
+  assert.equal(parsed.lineItems.length, 2);
+  assert.equal(parsed.lineItems[0].code, '99284');
+  assert.equal(parsed.lineItems[0].quantity, 1);
+  assert.equal(parsed.lineItems[0].amount, 1850);
+  assert.equal(parsed.totalCharges, 2260);
+  assert.equal(parsed.contractualAdjustment, 660);
+  assert.equal(parsed.patientResponsibility, 1600);
+});
+
+test('auditMedicalBill does not double-count excessive markup across 3+ duplicate charges and handles unlisted CPT codes', () => {
+  const tripleDuplicateBill = {
+    patientName: 'Casey Kim',
+    providerName: 'Metro Health',
+    serviceDates: '2026-09-12',
+    totalCharges: 3230,
+    lineItems: [
+      { id: 'line-1', code: '80053', description: 'CMP #1', quantity: 1, amount: 410 },
+      { id: 'line-2', code: '80053', description: 'CMP #2', quantity: 1, amount: 410 },
+      { id: 'line-3', code: '80053', description: 'CMP #3', quantity: 1, amount: 410 },
+      { id: 'line-4', code: '29881', description: 'Knee arthroscopy meniscectomy', quantity: 1, amount: 2000 },
+    ],
+  };
+
+  const report = auditMedicalBill(tripleDuplicateBill, { locality: 'nyc' });
+  // 2 duplicates ($820) + markup on first 80053 ($378.97) = $1198.97 (must never exceed $1230 billed for 80053)
+  assert.ok(report.estimatedLineSavings < 1230, `Expected savings < 1230, got ${report.estimatedLineSavings}`);
+  assert.equal(report.patientResponsibility, 3230);
+  assert.ok(report.recommendedSettlementOffer >= 1000, `Expected positive settlement offer for unlisted surgical code, got ${report.recommendedSettlementOffer}`);
+});
+
