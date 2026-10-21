@@ -150,3 +150,19 @@ test('auditMedicalBill does not double-count excessive markup across 3+ duplicat
   assert.ok(report.recommendedSettlementOffer >= 1000, `Expected positive settlement offer for unlisted surgical code, got ${report.recommendedSettlementOffer}`);
 });
 
+import { summarizeAuditDiagnostics } from '../lib/billing/medicalBillAuditor.mjs';
+
+test('summarizeAuditDiagnostics computes overcharge ratio and validates invariants', () => {
+  const report = auditMedicalBill({
+    lineItems: [
+      { id: '1', code: '99285', description: 'ER Visit Level 5', amount: 4200, quantity: 1 },
+      { id: '2', code: '36415', description: 'Routine Venipuncture', amount: 180, quantity: 1 },
+      { id: '3', code: '80053', description: 'Comprehensive Metabolic Panel', amount: 650, quantity: 1 },
+    ],
+  });
+  const diag = summarizeAuditDiagnostics(report);
+  assert.equal(diag.invariantsOk, true);
+  assert.ok(diag.overchargeRatio > 0 && diag.overchargeRatio <= 1);
+  assert.ok(diag.findingCount >= 1);
+  assert.throws(() => summarizeAuditDiagnostics(null), /auditReport must be a valid object/);
+});
